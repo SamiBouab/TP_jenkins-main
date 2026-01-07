@@ -45,25 +45,24 @@ pipeline {
     }
 
     post {
-        success {
-            // slackSend color: 'good', message: "Build Success: ${env.JOB_NAME} [${env.BUILD_NUMBER}]"
-            mail to: 'ms_bouab@esi.dz',
-                 subject: "Build Success: ${env.JOB_NAME}",
-                 body: 'The build was successful. Deployed to MyMavenRepo.'
-        }
-        failure {
-            // slackSend color: 'danger', message: "Build Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]"
-            mail to: 'ms_bouab@esi.dz',
-                 subject: "Build Failed: ${env.JOB_NAME}",
-                 body: 'The build failed. Check Jenkins logs.'
-        }
-    }
-    post {
     success {
+        // 1. Send Email
+        mail to: 'ms_bouab@esi.dz',
+             subject: "Build Success: ${env.JOB_NAME}",
+             body: 'The build was successful. Deployed to MyMavenRepo.'
+        
+        // 2. Send Slack
         slackSend color: 'good', message: "Build Success: ${env.JOB_NAME} - #${env.BUILD_NUMBER}"
     }
     failure {
+        // 1. Send Email
+        mail to: 'ms_bouab@esi.dz',
+             subject: "Build Failed: ${env.JOB_NAME}",
+             body: 'The build failed. Check Jenkins logs.'
+             
+        // 2. Send Slack
         slackSend color: 'danger', message: "Build Failed: ${env.JOB_NAME} - #${env.BUILD_NUMBER}"
     }
 }
+    
 }
