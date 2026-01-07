@@ -58,4 +58,12 @@ pipeline {
                  body: 'The build failed. Check Jenkins logs.'
         }
     }
+    post {
+    success {
+        slackSend color: 'good', message: "Build Success: ${env.JOB_NAME} - #${env.BUILD_NUMBER}"
+    }
+    failure {
+        slackSend color: 'danger', message: "Build Failed: ${env.JOB_NAME} - #${env.BUILD_NUMBER}"
+    }
+}
 }
