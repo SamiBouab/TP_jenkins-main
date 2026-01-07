@@ -1,0 +1,57 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'maven-publish'
+    id 'org.sonarqube' version '3.5.0.2730'
+}
+
+group = 'com.example'
+version = '1.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'io.cucumber:cucumber-java:6.10.4'
+    testImplementation 'io.cucumber:cucumber-junit:6.10.4'
+    testImplementation 'junit:junit:4.13.2'
+}
+
+test {
+    useJUnit()
+    systemProperty 'cucumber.plugin', 'pretty, html:build/reports/cucumber/cucumber.html, json:build/reports/cucumber/cucumber.json'
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+// Publishing configuration (Keep this for the Deploy phase)
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name = "myMavenRepo"
+            url = "https://mymavenrepo.com/repo/cEmjfkxugPlzLxXg1A2B/" // Use your repo URL
+            allowInsecureProtocol = true
+            credentials {
+                username = "myMavenRepo"
+                password = "test0005"
+            }
+        }
+    }
+}
